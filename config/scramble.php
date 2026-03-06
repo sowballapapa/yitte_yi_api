@@ -132,5 +132,9 @@ return [
         RestrictedDocsAccess::class,
     ],
 
-    'extensions' => [],
+    'extensions' => [
+        \Dedoc\Scramble\Support\Generator\SecurityScheme::http('bearer')
+            ->setName('Authorization')
+            ->setDescription('Saisissez le Bearer Token retourné par la route de Login.')
+    ],
 ];
