@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Notifications\PasswordResetNotification;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Autoriser l'accès à la documentation Scramble (API Docs)
+        Gate::define('viewApiDocs', function (?User $user) {
+            return env('APP_ENV') === 'local' || ($user && $user->isAdmin());
+        });
+
         // Register the UserObserver: auto-creates preferences & sends welcome email
         User::observe(UserObserver::class);
 
