@@ -1,59 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Yitte Yi API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Bienvenue sur le dépôt de l'API REST de l'application **Yitte Yi**.
+Cette API est construite avec le framework [Laravel](https://laravel.com) et sert de backend pour nos applications clientes (ex: Mobile avec Flutter).
 
-## About Laravel
+## Fonctionnalités principales
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Authentification & Sécurité** : JWT via Laravel Sanctum, Socialite (Google & Apple) pour web et mobile, Reset de mots de passe.
+- **Gestion des Tâches** : CRUD complet pour les tâches avec filtres avancés, pagination et tri.
+- **Priorités de Tâches** : Gestion des niveaux de priorités (Basse, Moyenne, Haute, etc.).
+- **Préférences Utilisateurs** : Personnalisation de l'expérience (Thème, Langue, Fuseau horaire, Délais de notification).
+- **Notifications** : Alertes e-mail (via Brevo SMTP) pour la bienvenue, les rappels d'échéance de tâches et la réinitialisation de mots de passe (avec deep-links mobiles).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prérequis
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.2
+- Composer
+- Base de données PostgreSQL (ou MySQL)
+- Un compte [Brevo](https://www.brevo.com/) (pour l'envoi d'e-mails)
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+1. **Cloner le dépôt**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    ```bash
+    git clone <votre-url-git>
+    cd yitte_yi_api
+    ```
 
-## Laravel Sponsors
+2. **Installer les dépendances**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    ```bash
+    composer install
+    ```
 
-### Premium Partners
+3. **Configuration de l'environnement**
+   Copiez le fichier d'exemple et générez la clé de l'application :
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-## Contributing
+    _N'oubliez pas de configurer vos accès BDD (`DB\__`), votre SMTP Brevo (`MAIL\__`), ainsi que les clés d'API Socialite dans le fichier `.env`._
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. **Migrations et Seeders**
+   Exécutez les migrations et remplissez la base de données avec les données de test (Rôles, Utilisateurs, Priorités, Tâches) :
 
-## Code of Conduct
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. **Lancer le serveur local**
+    ```bash
+    php artisan serve
+    ```
+    L'API sera accessible sur `http://localhost:8000`.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📚 Documentation de l'API (Scramble)
 
-## License
+La documentation complète et interactive de l'API est générée automatiquement à partir du code source grâce au package **Scramble**.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Comment y accéder ?
+
+Une fois votre serveur local lancé (`php artisan serve`), rendez-vous simplement sur :
+
+👉 **[http://localhost:8000/docs/api](http://localhost:8000/docs/api)**
+
+### Que contient cette documentation ?
+
+Scramble analyse nos routes, contrôleurs et FormRequests pour générer une spécification **OpenAPI (Swagger)** en temps réel.
+Vous y trouverez :
+
+- La liste exhaustive de tous les endpoints (Auth, Tasks, Preferences...).
+- Les paramètres attendus (body, query, headers).
+- Les règles de validation appliquées.
+- Les schémas de réponses (succès et erreurs).
+- Un bouton **"Try It"** pour tester les requêtes directement depuis l'interface web (assurez-vous d'abord de récupérer un token Bearer via l'endpoint de Login).
+
+> **Sécurité** : Par défaut, l'accès à `/docs/api` est ouvert en environnement `local`. En environnement de production, seul un utilisateur disposant du rôle **Admin** et connecté pourra y accéder.
+
+### Obtenir le fichier OpenAPI.json brut
+
+Si vous souhaitez importer la documentation dans Postman, Insomnia ou un outil de génération de code client (ex: Swagger Codegen, OpenAPI Generator pour Flutter), le fichier `api.json` brut est disponible ici :
+
+👉 **[http://localhost:8000/docs/api.json](http://localhost:8000/docs/api.json)**
+
+---
+
+## Contribution
+
+Pour toute modification, merci de respecter l'architecture en place :
+
+- Utilisation de **FormRequests** pour la validation.
+- Utilisation des **Policies** pour gérer les autorisations de CRUD.
+- Les réponses API doivent passer par les méthodes `success()` et `error()` héritées de `ResponseController`.
