@@ -5,6 +5,9 @@ namespace App\Providers;
 use App\Models\User;
 use App\Notifications\PasswordResetNotification;
 use App\Observers\UserObserver;
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +30,13 @@ class AppServiceProvider extends ServiceProvider
         // Autoriser l'accès à la documentation Scramble (API Docs)
         Gate::define('viewApiDocs', function (?User $user) {
             return env('APP_ENV') === 'local' || ($user && $user->isAdmin());
+        });
+
+        // Configurer Scramble pour accepter le Bearer Token (Sanctum)
+        Scramble::extendOpenApi(function (OpenApi $openApi) {
+            $openApi->secure(
+                SecurityScheme::http('bearer', 'JWT')
+            );
         });
 
         // Register the UserObserver: auto-creates preferences & sends welcome email
