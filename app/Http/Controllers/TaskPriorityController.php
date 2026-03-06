@@ -63,11 +63,7 @@ class TaskPriorityController extends ResponseController
      */
     public function show(Request $request, $id)
     {
-        $taskPriority = TaskPriority::find($id);
-
-        if (!$taskPriority) {
-            return $this->error('Priorité non trouvée', 404);
-        }
+        $taskPriority = TaskPriority::findOrFail($id);
 
         $this->authorize('view', $taskPriority);
 
@@ -79,11 +75,7 @@ class TaskPriorityController extends ResponseController
      */
     public function update(UpdateTaskPriorityRequest $request, $id)
     {
-        $taskPriority = TaskPriority::find($id);
-
-        if (!$taskPriority) {
-            return $this->error('Priorité non trouvée', 404);
-        }
+        $taskPriority = TaskPriority::findOrFail($id);
 
         $this->authorize('update', $taskPriority);
 
@@ -97,11 +89,7 @@ class TaskPriorityController extends ResponseController
      */
     public function destroy(Request $request, $id)
     {
-        $taskPriority = TaskPriority::find($id);
-
-        if (!$taskPriority) {
-            return $this->error('Priorité non trouvée', 404);
-        }
+        $taskPriority = TaskPriority::findOrFail($id);
 
         $this->authorize('delete', $taskPriority);
 

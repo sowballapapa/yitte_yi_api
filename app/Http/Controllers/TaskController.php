@@ -20,7 +20,7 @@ class TaskController extends ResponseController
 
         $user = $request->user();
 
-        $query = $user->isAdmin()
+        $query = $user->isAdmin() && !$request->boolean('isOwn')
             ? Task::with(['user', 'taskPriority'])
             : Task::with(['taskPriority'])->where('user_id', $user->id);
 
@@ -89,11 +89,7 @@ class TaskController extends ResponseController
      */
     public function show(Request $request, $id)
     {
-        $task = Task::with(['taskPriority', 'user'])->find($id);
-
-        if (!$task) {
-            return $this->error('Tâche non trouvée', 404);
-        }
+        $task = Task::with(['taskPriority', 'user'])->findOrFail($id);
 
         $this->authorize('view', $task);
 
@@ -105,11 +101,7 @@ class TaskController extends ResponseController
      */
     public function update(UpdateTaskRequest $request, $id)
     {
-        $task = Task::find($id);
-
-        if (!$task) {
-            return $this->error('Tâche non trouvée', 404);
-        }
+        $task = Task::findOrFail($id);
 
         $this->authorize('update', $task);
 
@@ -125,11 +117,7 @@ class TaskController extends ResponseController
      */
     public function destroy(Request $request, $id)
     {
-        $task = Task::find($id);
-
-        if (!$task) {
-            return $this->error('Tâche non trouvée', 404);
-        }
+        $task = Task::findOrFail($id);
 
         $this->authorize('delete', $task);
 

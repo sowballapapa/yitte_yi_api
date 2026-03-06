@@ -39,11 +39,7 @@ class RoleController extends ResponseController
      */
     public function show($id)
     {
-        $role = Role::find($id);
-
-        if (!$role) {
-            return $this->error('Role non trouvé', 404);
-        }
+        $role = Role::findOrFail($id);
 
         return $this->success($role, 'Role récupéré avec succès', 201);
     }
